@@ -1,10 +1,14 @@
 package com.revature.purrfectbarkery.ui;
 
+import com.revature.purrfectbarkery.daos.ProductDAO;
+import com.revature.purrfectbarkery.daos.StoreDAO;
+import com.revature.purrfectbarkery.daos.UserDAO;
 import com.revature.purrfectbarkery.models.User;
+import com.revature.purrfectbarkery.services.ProductService;
+import com.revature.purrfectbarkery.services.StoreService;
 import com.revature.purrfectbarkery.services.UserService;
 import com.revature.purrfectbarkery.utils.custom_exceptions.InvalidUserException;
 
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -19,6 +23,7 @@ public class LoginMenu implements IMenu {
     public void start() {
         String userInput;
         Scanner sc = new Scanner(System.in);
+
         exit:
         {
             while (true) {
@@ -37,7 +42,7 @@ public class LoginMenu implements IMenu {
                     case "2":
                         User user = signup();
                         userService.register(user);
-                        new MainMenu(user).start();
+                        new MainMenu(user, new UserService(new UserDAO()), new StoreService(new StoreDAO()), new ProductService(new ProductDAO())).start();
                         break;
                     case "x":
                         System.out.println("\nCome back again!");
@@ -53,12 +58,38 @@ public class LoginMenu implements IMenu {
     }
 
     private void login() {
-        System.out.println("\nneeds implementation");
+        String username = "";
+        String password = "";
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("\nLogging in...");
+
+        exit: {
+            while (true) {
+                System.out.print("\n Enter username: ");
+                username = sc.nextLine();
+
+                System.out.print("\n Enter password: ");
+                password = sc.nextLine();
+
+                try {
+                    User user = userService.login(username, password);
+                    if (user.getRole().equals("ADMIN")) new AdminMenu(user, new UserService(new UserDAO())).start();
+                    else new MainMenu(user, new UserService(new UserDAO()), new StoreService(new StoreDAO()), new ProductService(new ProductDAO())).start();
+                     //pathing to the mainmenu right above, just need to differentiate from the example
+                     break exit;
+                } catch (InvalidUserException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
     }
 
     private User signup() {
         String username;
         String password;
+        String password2;
         String name = "";
         String email = "";
         User user;
@@ -90,11 +121,16 @@ public class LoginMenu implements IMenu {
                 {
 
                     while(true){
-                        System.out.println("\nEnter a password: ");
-                        password = sc.nextLine();
-
                         try {
+                            System.out.print("\nEnter a password: ");
+                            password = sc.nextLine();
+
                             userService.isValidPassword(password);
+
+                            System.out.print("\nRe-enter password: ");
+                            password2 = sc.nextLine();
+
+                            userService.checkSamePassword(password, password2);
                             break passwordExit;
                         } catch (InvalidUserException e) {
                             System.out.println(e.getMessage());
@@ -114,9 +150,10 @@ public class LoginMenu implements IMenu {
                     switch (sc.nextLine().toLowerCase()){
                         case "y":
                             user = new User(UUID.randomUUID().toString(), username, password, name, email, "CUSTOMER");
-                            break confirmExit;
+                            return user;
                         case "n":
                             System.out.println("\nLet's give that another try!");
+                            break confirmExit;
                         default:
                             System.out.println("\nInvalid entry!");
                             break;
