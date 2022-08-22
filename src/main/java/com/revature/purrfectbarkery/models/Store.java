@@ -15,6 +15,14 @@ public class Store {
         this.storeLocation = storeLocation;
     }
 
+    public String getStoreid() {
+        return storeid;
+    }
+
+    public void setStoreid(String storeid) {
+        this.storeid = storeid;
+    }
+
     public String getStoreName() {
         return storeName;
     }

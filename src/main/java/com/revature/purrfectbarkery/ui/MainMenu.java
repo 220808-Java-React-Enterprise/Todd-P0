@@ -1,6 +1,7 @@
 package com.revature.purrfectbarkery.ui;
 
 import com.revature.purrfectbarkery.models.Product;
+import com.revature.purrfectbarkery.models.Store;
 import com.revature.purrfectbarkery.models.User;
 import com.revature.purrfectbarkery.services.ProductService;
 import com.revature.purrfectbarkery.services.StoreService;
@@ -38,11 +39,9 @@ public class MainMenu implements IMenu {
 
                 switch (sc.nextLine()) {
                     case "1":
-                        System.out.println("woohoo");
-                        //viewStoreInventory();
+                        viewStoreInventory();
                         break;
                     case "2":
-                        //viewStoreLocations();
                         System.out.println("needs work");
                         break;
                     case "x":
@@ -55,25 +54,37 @@ public class MainMenu implements IMenu {
         }
     }
 
-//    private void viewStoreInventory() {
-//        Scanner sc = new Scanner(System.in);
-//
-//        exit: {
-//            System.out.println("\n Viewing Inventory...");
-//            List<Product> prods  = ProductService.getAllProducts();
-//
-//            for (int i =0; i <prods.size(); i++) {
-//                System.out.println("[" + (i+1) + "]" + prods.get(i).getProductname());
-//            }
-//            System.out.print("\nPick the purrfect treat!");
-//            int index = sc.nextInt() - 1;
-//
-//            //try {
-//               // Product selectedProduct = prods.get(index);
-//
-//                //list price and what type of treat it is?
-//
-//            //}
-//        }
-//    }
+    private void viewStoreInventory() {
+        Scanner sc = new Scanner(System.in);
+
+        exit:
+        {
+            System.out.println("\n Viewing Barkery locations...");
+
+            List<Store> stores = storeService.getAllStores();
+
+            for (int i = 0; i < stores.size(); i++) {
+                System.out.println("[" + (i + 1) + "]" + stores.get(i).getStoreName());
+            }
+            System.out.println("\n Pick your location!");
+            int index = sc.nextInt() - 1;
+            //System.out.print("\nPick the purrfect treat!");
+
+
+            try {
+                Store selectedStore = stores.get(index);
+
+                List<Product> products = productService.getAllProductsByStoreId(selectedStore.getStoreid());
+
+                System.out.println("\nName: " + selectedStore.getStoreName());
+                for (Product p : products) {
+                    System.out.println("Product name: " + p.getProductname());
+                    System.out.println("Product price: " + p.getProductprice());
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("\nInvalid input!");
+
+            }
+        }
+    }
 }

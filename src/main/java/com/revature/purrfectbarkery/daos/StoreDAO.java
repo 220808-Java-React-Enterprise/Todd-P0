@@ -11,14 +11,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreDAO implements CruDAO {
+public class StoreDAO implements CruDAO<Store> {
     @Override
-    public void save(Object obj) {
-
+    public void save(Store obj) {
+        try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO store (storeid, storename, storelocation) VALUES (?, ?, ?)");
+            ps.setString(1, obj.getStoreid());
+            ps.setString(2, obj.getStoreName());
+            ps.setString(3, obj.getStoreLocation());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("An error occurred when trying to save to the database.");
+        }
     }
 
     @Override
-    public void update(Object obj) {
+    public void update(Store obj) {
 
     }
 
@@ -28,7 +36,7 @@ public class StoreDAO implements CruDAO {
     }
 
     @Override
-    public Object getById(String id) {
+    public Store getById(String id) {
         return null;
     }
 

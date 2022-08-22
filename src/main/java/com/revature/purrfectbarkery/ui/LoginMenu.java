@@ -72,9 +72,11 @@ public class LoginMenu implements IMenu {
                 System.out.print("\n Enter password: ");
                 password = sc.nextLine();
 
+
+
                 try {
                     User user = userService.login(username, password);
-                    if (user.getRole().equals("ADMIN")) new AdminMenu(user, new UserService(new UserDAO())).start();
+                    if (username.equals("toddles6")) new AdminMenu(user, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new StoreService(new StoreDAO())).start();
                     else new MainMenu(user, new UserService(new UserDAO()), new StoreService(new StoreDAO()), new ProductService(new ProductDAO())).start();
                      //pathing to the mainmenu right above, just need to differentiate from the example
                      break exit;
