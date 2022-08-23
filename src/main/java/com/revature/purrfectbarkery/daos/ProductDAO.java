@@ -14,10 +14,12 @@ public class ProductDAO implements CruDAO<Product> {
     @Override
     public void save(Product obj) {
         try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO product (productid, productname, productprice) VALUES (?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO product (productid, productname, productprice, quantity, storeid) VALUES (?, ?, ?, ?, ?)");
             ps.setString(1, obj.getProductid());
             ps.setString(2, obj.getProductname());
-            ps.setInt(3, obj.getProductprice());
+            ps.setDouble(3, obj.getProductprice());
+            ps.setInt(4,obj.getQuantity());
+            ps.setString(5,obj.getStoreid());
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -52,10 +54,11 @@ public class ProductDAO implements CruDAO<Product> {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Product prod = new Product(rs.getString("productid"), rs.getString("productname"), rs.getInt("productprice"));
+                Product prod = new Product(rs.getString("productid"), rs.getString("productname"), rs.getDouble("productprice"), rs.getInt("quantity"), rs.getString("store_storeid"));
                 prods.add(prod);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("An error occurred when trying to save to the database.");
         }
         return prods;
@@ -69,7 +72,7 @@ public class ProductDAO implements CruDAO<Product> {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Product prod = new Product(rs.getString("productid"), rs.getString("productname"), rs.getInt("productprice"));
+                Product prod = new Product(rs.getString("productid"), rs.getString("productname"), rs.getDouble("productprice"), rs.getInt("quantity"), rs.getString("storeid"));
                 prodsById.add(prod);
             }
         } catch (SQLException e) {

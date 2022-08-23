@@ -19,13 +19,18 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
-        this.role = "CUSTOMER";
+        this.role = role;
 
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
-    public void setId(String id) { this.id = id; }
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -57,10 +62,14 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getRole() {
-        return "CUSTOMER";
+        return role;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     @Override
     public String toString() {
@@ -70,9 +79,8 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
-
-
 }
 

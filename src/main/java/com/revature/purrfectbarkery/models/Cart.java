@@ -2,13 +2,10 @@ package com.revature.purrfectbarkery.models;
 
 public class Cart {
 
-    private String cardid;
+    private String cartid;
 
-    private String product_ProductId;
-
-    private String orderHistory_OrderId;
-
-    private int cartPrice;
+    private String name;
+    private double cartPrice;
 
     private int quantity;
 
@@ -17,44 +14,35 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(String cardid, String product_ProductId, String orderHistory_OrderId, int cartPrice, int quantity, String users_Id) {
-        this.cardid = cardid;
-        this.product_ProductId = product_ProductId;
-        this.orderHistory_OrderId = orderHistory_OrderId;
+    public Cart(String cartid, String name, double cartPrice, int quantity, String users_Id) {
+        this.cartid = cartid;
+        this.name = name;
         this.cartPrice = cartPrice;
         this.quantity = quantity;
         this.users_Id = users_Id;
     }
 
-    public String getCardid() {
-        return cardid;
+    public String getCartid() {
+        return cartid;
     }
 
-    public void setCardid(String cardid) {
-        this.cardid = cardid;
+    public void setCartid(String cartid) {
+        this.cartid = cartid;
     }
 
-    public String getProduct_ProductId() {
-        return product_ProductId;
+    public String getName() {
+        return name;
     }
 
-    public void setProduct_ProductId(String product_ProductId) {
-        this.product_ProductId = product_ProductId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getOrderHistory_OrderId() {
-        return orderHistory_OrderId;
-    }
-
-    public void setOrderHistory_OrderId(String orderHistory_OrderId) {
-        this.orderHistory_OrderId = orderHistory_OrderId;
-    }
-
-    public int getCartPrice() {
+    public double getCartPrice() {
         return cartPrice;
     }
 
-    public void setCartPrice(int cartPrice) {
+    public void setCartPrice(double cartPrice) {
         this.cartPrice = cartPrice;
     }
 
@@ -77,12 +65,13 @@ public class Cart {
     @Override
     public String toString() {
         return "Cart{" +
-                "cardid='" + cardid + '\'' +
-                ", product_ProductId='" + product_ProductId + '\'' +
-                ", orderHistory_OrderId='" + orderHistory_OrderId + '\'' +
+                "cartid='" + cartid + '\'' +
+                ", name='" + name + '\'' +
                 ", cartPrice=" + cartPrice +
                 ", quantity=" + quantity +
                 ", users_Id='" + users_Id + '\'' +
                 '}';
     }
 }
+
+

@@ -1,5 +1,7 @@
 package com.revature.purrfectbarkery.models;
 
+import java.sql.Date;
+
 public class OrderHistory {
 
     private String orderId;
@@ -16,6 +18,8 @@ public class OrderHistory {
         this.date = date;
         this.users_Id = users_Id;
     }
+
+
 
     public String getOrderId() {
         return orderId;

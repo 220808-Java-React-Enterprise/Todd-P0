@@ -15,7 +15,17 @@ public class OrderHistoryDAO implements CruDAO<OrderHistory>{
 
     @Override
     public void save(OrderHistory obj) {
+        try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO orderhistory (orderid, date, users_id) VALUES (?, ?, ?)");
+            ps.setString(1, obj.getOrderId());
+            ps.setString(2, obj.getDate());
+            ps.setString(3, obj.getUsers_Id());
+            ps.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("An error occurred when trying to save to the database.");
+        }
     }
 
     @Override

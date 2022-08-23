@@ -1,12 +1,9 @@
 package com.revature.purrfectbarkery.ui;
 
-import com.revature.purrfectbarkery.daos.ProductDAO;
-import com.revature.purrfectbarkery.daos.StoreDAO;
-import com.revature.purrfectbarkery.daos.UserDAO;
+import com.revature.purrfectbarkery.daos.*;
+import com.revature.purrfectbarkery.models.Cart;
 import com.revature.purrfectbarkery.models.User;
-import com.revature.purrfectbarkery.services.ProductService;
-import com.revature.purrfectbarkery.services.StoreService;
-import com.revature.purrfectbarkery.services.UserService;
+import com.revature.purrfectbarkery.services.*;
 import com.revature.purrfectbarkery.utils.custom_exceptions.InvalidUserException;
 
 import java.util.Scanner;
@@ -42,7 +39,7 @@ public class LoginMenu implements IMenu {
                     case "2":
                         User user = signup();
                         userService.register(user);
-                        new MainMenu(user, new UserService(new UserDAO()), new StoreService(new StoreDAO()), new ProductService(new ProductDAO())).start();
+                        new MainMenu(user, new UserService(new UserDAO()), new StoreService(new StoreDAO()), new ProductService(new ProductDAO()), new InventoryService(new InventoryDAO()), new OrderHistoryService(new OrderHistoryDAO()), new CartService(new CartDAO())).start();
                         break;
                     case "x":
                         System.out.println("\nCome back again!");
@@ -76,8 +73,8 @@ public class LoginMenu implements IMenu {
 
                 try {
                     User user = userService.login(username, password);
-                    if (username.equals("toddles6")) new AdminMenu(user, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new StoreService(new StoreDAO())).start();
-                    else new MainMenu(user, new UserService(new UserDAO()), new StoreService(new StoreDAO()), new ProductService(new ProductDAO())).start();
+                    if (username.equals("toddles6")) new AdminMenu(user, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new StoreService(new StoreDAO()), new InventoryService(new InventoryDAO()), new OrderHistoryService(new OrderHistoryDAO())).start();
+                    else new MainMenu(user, new UserService(new UserDAO()), new StoreService(new StoreDAO()), new ProductService(new ProductDAO()), new InventoryService(new InventoryDAO()), new OrderHistoryService(new OrderHistoryDAO()), new CartService(new CartDAO())).start();
                      //pathing to the mainmenu right above, just need to differentiate from the example
                      break exit;
                 } catch (InvalidUserException e) {
@@ -87,6 +84,8 @@ public class LoginMenu implements IMenu {
         }
 
     }
+
+
 
     private User signup() {
         String username;

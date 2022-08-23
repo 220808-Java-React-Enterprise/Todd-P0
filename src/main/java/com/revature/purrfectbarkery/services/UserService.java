@@ -38,8 +38,12 @@ public class UserService {
         return userDAO.getById(id);
     }
 
-    public List<String> getAllUsernames(){
-        return userDAO.getAllUsernames();
+    public List<User> getAllUsers() {
+        return userDAO.getAll();
+    }
+
+    public List<User> getAllUsernames(String username){
+        return userDAO.getAllUsernames(username);
     }
 
     public boolean checkSamePassword (String password, String password2) {
@@ -48,7 +52,7 @@ public class UserService {
     }
 
     public boolean checkDuplicateUsername(String username){
-        if (userDAO.getUsername(username) != null) throw new InvalidUserException("Sorry, " + username + "has already been taken!");
+        if (userDAO.getUsername(username) != null) throw new InvalidUserException("Sorry, " + username + " has already been taken!");
         return false;
     }
 }
