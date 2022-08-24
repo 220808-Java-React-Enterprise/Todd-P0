@@ -14,7 +14,7 @@ public class ProductDAO implements CruDAO<Product> {
     @Override
     public void save(Product obj) {
         try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO product (productid, productname, productprice, quantity, storeid) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO product (productid, productname, productprice, quantity, store_storeid) VALUES (?, ?, ?, ?, ?)");
             ps.setString(1, obj.getProductid());
             ps.setString(2, obj.getProductname());
             ps.setDouble(3, obj.getProductprice());
@@ -23,13 +23,23 @@ public class ProductDAO implements CruDAO<Product> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("An error occurred when trying to save to the database.");
         }
     }
 
     @Override
     public void update(Product obj) {
+        try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("UPDATE product SET quantity = ? WHERE productname = ?");
+            ps.setInt(1,obj.getQuantity());
+            ps.setString(2, obj.getProductname());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
 
+            throw new RuntimeException("An error occurred when trying to save to the database.");
+        }
     }
 
     @Override

@@ -40,9 +40,8 @@ public class AdminMenu implements IMenu {
                 System.out.println("\nWelcome to the Purrfect Barkery");
                 System.out.println("[1] Check on Inventory!");
                 System.out.println("[2] Check on Customers");
-                System.out.println("[3] Place order to Store location for Customer");
-                System.out.println("[4] Add Store Locations!");
-                System.out.println("[5] Add Product to Store!");
+                System.out.println("[3] Add Store Locations!");
+                System.out.println("[4] Add Product to Store!");
                 System.out.println("[x] Exit");
 
                 System.out.println("\nEnter: ");
@@ -58,16 +57,12 @@ public class AdminMenu implements IMenu {
                         viewCustomers();
                         break;
                     case "3":
-                        System.out.println("\nWhich store location would you like to place an order to? ");
-                        //similar pathing as case 1 but diverts to ordering menu like as a customer...?
-                        break;
-                    case "4":
                         Store store = build();
                         storeService.addNewStore(store);
                         break;
-                    case "5":
-                        Product product = supply();
-                        productService.addProductToStore(product);
+                    case "4":
+                        supply();
+                        break;
                     case "x":
                         System.out.println("\nCome back again!");
                         break exit;
@@ -80,38 +75,52 @@ public class AdminMenu implements IMenu {
     }
 
     private void viewStoreInventory() {
+        double total = 0.0;
+        int quantity = 0;
+
         Scanner sc = new Scanner(System.in);
 
-        exit:
+        productexit:
         {
             while (true) {
+                //Lists all products
                 System.out.println("\nViewing all inventory!");
                 List<Product> productList = productService.getAllProducts();
                 System.out.println("\n");
 
                 for (int i = 0; i < productList.size(); i++) {
-                    System.out.println("[" + (i + 1) + "]" + productList.get(i).getProductname());
+                    System.out.println("[" + (i + 1) + "]" + productList.get(i).getProductname() + " Quantity: " + productList.get(i).getQuantity());
                 }
+
                 System.out.println("\n");
                 System.out.println("Select a product: ");
+                // product index
                 int index = sc.nextInt() - 1;
 
                 try {
-                    Product selectedProd = productList.get(index);
 
-                    List<Inventory> inventories = inventoryService.getAllByProdId(selectedProd.getProductid());
+                    // get product from user input
+                    Product selectedProduct = productList.get(index);
 
-                    System.out.println("\n Product Name: " + selectedProd.getProductname());
-                    for (Inventory p : inventories) {
-                        System.out.println("Product ID: " + p.getProduct_ProductId());
-                        System.out.println("Store ID: " + p.getStore_StoreId());
-                        System.out.println("Quantity: " + p.getQuantity());
-                    }
+                    System.out.println("\nItem you wish to replenish stock to: ");
+                    System.out.println((selectedProduct.getProductname()) + " current stock: " + selectedProduct.getQuantity());
+                    System.out.println("\nHow many? ");
+                    int prodquantity = sc.nextInt();
+
+                    int totalStoreQuantity = prodquantity + selectedProduct.getQuantity();
+                    System.out.println("\nUpdated Store Quantity: " + totalStoreQuantity);
+                    // give new cart with updated item/quantity
+                    Product product = new Product(selectedProduct.getQuantity(), selectedProduct.getProductname());
+                    productService.updateProd(product);
+
                 } catch (IndexOutOfBoundsException e) {
-                    System.out.println("\n Invalid entry!");
-
+                    // select a product outside the list bound
+                    System.out.println("\nInvalid input");
                 }
+                break productexit;
+
             }
+
 
         }
     }
@@ -136,7 +145,7 @@ public class AdminMenu implements IMenu {
                 // sout all users
                 for (int i = 0; i < userList.size(); i++) {
                     if (userList.get(i).getRole().equals("CUSTOMER")) {
-                        System.out.println("[" + (i + 1) + "]" + userList.get(i).getUsername());
+                        System.out.println("[" + (i + 1) + "] " + userList.get(i).getUsername());
                     }
                 }
 
@@ -149,12 +158,13 @@ public class AdminMenu implements IMenu {
 
                     List<OrderHistory> orderHistories = orderHistoryService.getAllOrderHistoryByUserId(selectedUser.getId());
 
-                    System.out.println("\n User Name: " + selectedUser.getUsername());
+                    System.out.println("\nUser Name: " + selectedUser.getUsername());
                     for (OrderHistory oH : orderHistories) {
-                        System.out.println("Product ID: " + oH.getOrderId());
-                        System.out.println("Store ID: " + oH.getDate());
-                        System.out.println("Quantity: " + oH.getUsers_Id());
-                    }
+                        System.out.println("Order ID: " + oH.getOrderId());
+                        System.out.println("Date: " + oH.getDate());
+                        System.out.println("User ID: " + oH.getUsers_Id());
+                        System.out.println(" ");
+                    } break exit;
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("\n Invalid entry!");
                 }
@@ -193,42 +203,54 @@ public class AdminMenu implements IMenu {
         }
     }
 
-
-    private Product supply() {
+    private void supply() {
         String productName = "";
         double productPrice;
         int quantity;
-        Product product;
+        String storeId = "";
         Scanner sc = new Scanner(System.in);
 
-
+        System.out.println("\nPlease enter the Store ID: ");
+        storeId = sc.nextLine();
         System.out.println("\nWhat would you like to sell in the store? ");
         productName = sc.nextLine();
         System.out.println("\nHow much are we selling this for?! ");
         productPrice = sc.nextDouble();
         System.out.println("\nHow many are we adding to stock?");
         quantity = sc.nextInt();
+        sc.skip("\n");
+
 
         exit:
         while (true) {
-            System.out.println("\nDoes this look right to you? (y/n)");
-            System.out.print("\nEnter: ");
-            System.out.println("Product name: " + productName + " Product price: " + productPrice);
+            List<Product> productList = productService.getAllProducts();
+
+            for (int i = 0; i < productList.size(); i++) {
+                productList.get(i).getProductid();
+            }
+            Integer newId = productList.size() + 1;
+            newId.toString();
+
+            System.out.println("\nDoes this look right to you? ");
+            System.out.println("Product name: " + productName);
+            System.out.println("Product price: " + productPrice);
+            System.out.println("Quantity " + quantity);
+            System.out.println("Store ID: " + storeId);
+            System.out.print("\nEnter (y/n): ");
+
 
 
             switch (sc.nextLine().toLowerCase()) {
                 case "y":
-                    product = new Product(UUID.randomUUID().toString(), productName, productPrice, quantity, supply().getStoreid());
-//                    if(productName.equals(productName)) {
-//                        quantity += sc.nextInt();
-//                    }
-                    return product;
+                    Product product = new Product(newId.toString(), productName, productPrice, quantity, storeId);
+                    productService.addProductToStore(product);
+                    break exit;
                 case "n":
                     System.out.println("\nLet's give that another try!");
-                    break;
+                    break exit;
                 default:
                     System.out.println("\nInvalid entry!");
-                    break;
+                    break exit;
             }
         }
 

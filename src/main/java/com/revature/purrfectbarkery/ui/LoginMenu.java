@@ -60,15 +60,17 @@ public class LoginMenu implements IMenu {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("\nLogging in...");
+        System.out.println("\n");
+        System.out.println("\nPress [x] at anytime to exit!");
 
         exit: {
             while (true) {
-                System.out.print("\n Enter username: ");
+                System.out.print("\nEnter username: ");
                 username = sc.nextLine();
-
-                System.out.print("\n Enter password: ");
+                if(username.equalsIgnoreCase("x")) break exit;
+                System.out.print("\nEnter password: ");
                 password = sc.nextLine();
-
+                if (password.equalsIgnoreCase("x")) break exit;
 
 
                 try {

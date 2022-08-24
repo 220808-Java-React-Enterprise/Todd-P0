@@ -20,6 +20,12 @@ public class Product {
         this.storeid = storeid;
     }
 
+    public Product(Integer quantity, String productname) {
+        this.quantity = quantity;
+        this.productname = productname;
+    }
+
+
     public String getProductid() {
         return productid;
     }

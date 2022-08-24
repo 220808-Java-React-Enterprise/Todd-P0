@@ -58,7 +58,8 @@ public class MainMenu implements IMenu {
                         viewOrderHistory();
                         break;
                     case "4":
-                        //viewStoreLocations();
+                        viewStoreLocations();
+                        break;
                     case "x":
                         break exit;
                     default:
@@ -92,6 +93,7 @@ public class MainMenu implements IMenu {
                     case "y":
                         orderHistory = new OrderHistory(UUID.randomUUID().toString(), date, user.getId());
                         orderHistoryService.addOrderHistory(orderHistory);
+                        break exit;
                     case "n":
                         cartService.deleteCart(user.getId());
                         System.out.println("\nLet's give that another try!");
@@ -174,8 +176,33 @@ public class MainMenu implements IMenu {
                     System.out.println("[" + (i + 1) + "] Order ID: " + orderHistories.get(i).getOrderId() + " Date Purchased: " + orderHistories.get(i).getDate() + " User ID: " + orderHistories.get(i).getUsers_Id());
                 }
 
+                System.out.println("Press x to Exit! ");
+                switch (sc.nextLine().toLowerCase()) {
+                    case "x":
+                        break exit;
 
-                System.out.println("\nDoes this look right to you?");
+                }
+
+
+            }
+        }
+
+    }
+
+    private void viewStoreLocations() {
+        Scanner sc = new Scanner(System.in);
+
+        exit:
+        {
+            while (true) {
+                System.out.println("\nViewing Store Locations! ");
+                List<Store> stores = storeService.getAllStores();
+                for (int i = 0; i < stores.size(); i++) {
+                    System.out.println("[" + (i + 1) + "] Store Name: " + stores.get(i).getStoreName() + " Store Location: " + stores.get(i).getStoreLocation());
+                }
+
+                System.out.println("\nWe are growing!");
+                System.out.println("\nKeep an eye out for a new Store near you :)");
 
 
                 System.out.println("Press x to Exit! ");

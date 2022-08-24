@@ -36,7 +36,7 @@ public class UserServiceTest {
     @Test
     public void test_isValidUsername_givenCorrectUsername() {
         // Arrange
-        String validUsername = "bduong0929";
+        String validUsername = "toddles6";
 
         // Act
         boolean flag = sut.isValidUsername(validUsername);
@@ -48,7 +48,7 @@ public class UserServiceTest {
     @Test(expected = InvalidUserException.class)
     public void test_isNotValidUsername_givenInCorrectUsername() {
         // Arrange
-        String invalidUsername = "bduong";
+        String invalidUsername = "toddle";
 
         // Act
         sut.isValidUsername(invalidUsername);
@@ -75,7 +75,7 @@ public class UserServiceTest {
     @Test(expected = InvalidUserException.class)
     public void test_isNotValidUsername_startingWithUnderscore() {
         // Arrange
-        String invalidUsername = "_bduong0929";
+        String invalidUsername = "_toddles6";
 
         // Act
         sut.isValidUsername(invalidUsername);
@@ -85,7 +85,7 @@ public class UserServiceTest {
     public void test_login_validLoginGivenCorrectCredentials() {
         // Arrange
         UserService spiedSut = Mockito.spy(sut);
-        String validUsername = "bduong0929";
+        String validUsername = "toddles6";
         String validPassword = "Passw0rd";
         when(spiedSut.isValidUsername(validUsername)).thenReturn(true);
         when(spiedSut.isValidPassword(validPassword)).thenReturn(true);
