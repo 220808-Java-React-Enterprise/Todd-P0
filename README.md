@@ -43,7 +43,7 @@ With that said, the Admin can further add products to the potential purchase inv
 
 ## Entity Relationship Diagram:
 
-![ERD](https://lucid.app/lucidchart/6681234d-cc0e-4f7b-aa06-d57e869d962c/edit?invitationId=inv_6b539ff2-9a47-4e5f-b2b8-14d5e1ab92fe#)
+![ERD](C:\Users\tcwar\OneDrive\Pictures\Camera Roll\erd.jpg)
 
 ## Future Developments:
 -Continuously expanding store to reflect the current popular customer purchases <br/>
