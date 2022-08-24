@@ -43,7 +43,8 @@ With that said, the Admin can further add products to the potential purchase inv
 
 ## Entity Relationship Diagram:
 
-![ERD](https://photos.google.com/photo/AF1QipP14RWAGGCwCy_Pq0u6a60CLlIGbS6zbyUGfeBq)
+![ERD](https://photos.app.goo.gl/hgcVbw45D9odzQP4A)
+
 
 ## Future Developments:
 -Continuously expanding store to reflect the current popular customer purchases <br/>
